@@ -5,18 +5,16 @@ import { usePathname } from "next/navigation";
 
 type NavItem = { href: string; label: string };
 
-export function Footer({ nav, email, line }: { nav: NavItem[]; email: string; line: string }) {
-  const dark = usePathname() === "/";
+export function Footer({ nav, email }: { nav: NavItem[]; email: string }) {
+  if (usePathname() === "/") return null;
+
   const year = new Date().getFullYear();
 
   return (
-    <footer className={`site-footer${dark ? " on-dark" : ""}`}>
+    <footer className="site-footer">
       <div className="container site-footer__inner">
         <div className="site-footer__grid">
-          <div>
-            <p className="site-footer__name">Joel Ibabao</p>
-            <p className="site-footer__line">{line}</p>
-          </div>
+          <p className="site-footer__name">Joel Ibabao</p>
           <nav aria-label="Footer">
             <ul className="site-footer__links">
               {nav.map((item) => (

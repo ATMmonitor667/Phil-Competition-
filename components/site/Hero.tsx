@@ -1,28 +1,19 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties, type MouseEvent } from "react";
-import { Arrow } from "@/components/ui/ArrowLink";
+import { useEffect, useState, type CSSProperties } from "react";
+import { ArrowLink } from "@/components/ui/ArrowLink";
 
 let played = false;
 
-type Props = { eyebrow: string; lines: string[]; intro: string; cta: string; target: string };
+type Props = { eyebrow: string; lines: string[]; intro: string; cta: string };
 
 // The headline is server-rendered real text; CSS keyframes only enhance it.
 // After the first visit in a session the entrance is not replayed (blueprint §15).
-export function Hero({ eyebrow, lines, intro, cta, target }: Props) {
+export function Hero({ eyebrow, lines, intro, cta }: Props) {
   const [animate] = useState(() => !played);
   useEffect(() => {
     played = true;
   }, []);
-
-  const onExplore = (e: MouseEvent<HTMLAnchorElement>) => {
-    const el = document.getElementById(target);
-    if (!el) return;
-    e.preventDefault();
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-    el.focus({ preventScroll: true });
-  };
 
   return (
     <section className={`container hero${animate ? " hero--animate" : ""}`} aria-labelledby="hero-title">
@@ -39,10 +30,8 @@ export function Hero({ eyebrow, lines, intro, cta, target }: Props) {
       </h1>
       <p className="support hero__intro">{intro}</p>
       <div className="hero__cta">
-        <a href={`#${target}`} className="arrow-link" onClick={onExplore}>
-          <span>{cta}</span>
-          <Arrow direction="down-right" />
-        </a>
+        <ArrowLink href="/writing" direction="down-right">{cta}</ArrowLink>
+        <ArrowLink href="/about">Explore bio</ArrowLink>
       </div>
       <p className="eyebrow hero__cue" aria-hidden="true">
         Scroll to explore

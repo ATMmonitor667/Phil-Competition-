@@ -54,7 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main" tabIndex={-1}>
           {children}
         </main>
-        <Footer nav={nav} email={site.email} line={site.footerLine} />
+        <Footer nav={nav} email={site.email} />
       </body>
     </html>
   );

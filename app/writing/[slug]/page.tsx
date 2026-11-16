@@ -48,24 +48,33 @@ export default async function EssayPage({ params }: Params) {
           {essay.deck && <p className="lead article__deck">{essay.deck}</p>}
           <p className="meta article__byline">{byline.join(" · ")}</p>
 
-          <div className="reading-copy article__body">
-            {essay.body ? (
-              essay.body.map((b, i) =>
-                b.type === "h2" ? (
-                  <h2 key={i}>{b.text}</h2>
-                ) : b.type === "quote" ? (
-                  <blockquote key={i}>
-                    <p>{b.text}</p>
-                    {b.cite && <cite>{b.cite}</cite>}
-                  </blockquote>
-                ) : (
-                  <p key={i}>{b.text}</p>
-                ),
-              )
-            ) : (
-              <p>{essay.excerpt}</p>
-            )}
-          </div>
+          {essay.pdf ? (
+            <div className="article__body">
+              <a className="arrow-link" href={essay.pdf}>
+                <span>Open full PDF</span>
+              </a>
+              <iframe className="article__pdf" src={essay.pdf} title={`${essay.title} (PDF)`} />
+            </div>
+          ) : (
+            <div className="reading-copy article__body">
+              {essay.body ? (
+                essay.body.map((b, i) =>
+                  b.type === "h2" ? (
+                    <h2 key={i}>{b.text}</h2>
+                  ) : b.type === "quote" ? (
+                    <blockquote key={i}>
+                      <p>{b.text}</p>
+                      {b.cite && <cite>{b.cite}</cite>}
+                    </blockquote>
+                  ) : (
+                    <p key={i}>{b.text}</p>
+                  ),
+                )
+              ) : (
+                <p>{essay.excerpt}</p>
+              )}
+            </div>
+          )}
 
           <div className="article__foot">
             {essay.publication && (

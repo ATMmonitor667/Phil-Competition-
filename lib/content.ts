@@ -45,6 +45,7 @@ export type Essay = {
   publishedAt?: string;
   excerpt: string;
   body?: Block[];
+  pdf?: string;
   draft?: boolean;
 };
 
