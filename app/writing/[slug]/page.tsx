@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { FramedPdf } from "@/components/editorial/FramedPdf";
 import { ReadingProgress } from "@/components/editorial/ReadingProgress";
 import { ArrowLink } from "@/components/ui/ArrowLink";
 import { formatDate, getEssayBySlug, getWriting, readingMinutes } from "@/lib/content";
@@ -53,7 +54,7 @@ export default async function EssayPage({ params }: Params) {
               <a className="arrow-link" href={essay.pdf}>
                 <span>Open full PDF</span>
               </a>
-              <iframe className="article__pdf" src={essay.pdf} title={`${essay.title} (PDF)`} />
+              <FramedPdf key={essay.pdf} src={essay.pdf} />
             </div>
           ) : (
             <div className="reading-copy article__body">
