@@ -980,75 +980,109 @@ html.js .reveal--mask.is-visible {
 }
 
 /* ==========================================================================
-   Essay template (Aeon reference: centred head, wide rounded image, narrow column)
+   Essay template (Aeon reference: full-width image band, right-aligned
+   caption, slim meta column beside a left-aligned text column)
    ========================================================================== */
-.essay__head {
-  max-width: 52rem;
-  margin-inline: auto;
-  text-align: center;
+.essay__band {
+  display: flex;
+  justify-content: center;
+  background: var(--color-dark);
+}
+
+.essay__band img {
+  width: 100%;
+  height: auto;
+  max-height: 72vh;
+  object-fit: cover;
+}
+
+@media (min-width: 760px) {
+  .essay__band img {
+    width: auto;
+    max-width: 100%;
+    height: clamp(360px, 62vh, 680px);
+    max-height: none;
+  }
+}
+
+.essay__caption {
+  margin-top: var(--space-3);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--color-muted);
+  text-align: right;
+}
+
+.essay__grid {
+  display: grid;
+  gap: var(--space-8);
+  padding-top: clamp(32px, 4vw, 56px);
+}
+
+@media (min-width: 900px) {
+  .essay__grid {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 8fr) minmax(0, 1fr);
+    column-gap: var(--grid-gap);
+  }
+}
+
+.essay__aside {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 20px;
+}
+
+.essay__aside .eyebrow {
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .essay__aside {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 6px;
+    padding-top: 0.9rem;
+  }
+}
+
+.essay__back {
+  margin-top: var(--space-2);
+}
+
+.essay__main {
+  max-width: 46rem;
 }
 
 .essay__title {
-  margin-top: var(--space-4);
-  font-size: clamp(2.625rem, 1.6rem + 4vw, 5.25rem);
-  font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-size: clamp(2.125rem, 1.6rem + 2vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
   text-wrap: balance;
 }
 
-.essay__standfirst {
-  max-width: 38rem;
-  margin: var(--space-6) auto 0;
-  font-size: clamp(1.3125rem, 1.15rem + 0.5vw, 1.625rem);
-  font-style: italic;
-  line-height: 1.4;
+.essay__body {
+  margin-top: var(--space-6);
+  font-family: var(--font-reading);
+  font-size: clamp(1.25rem, 1.12rem + 0.45vw, 1.5rem);
+  line-height: 1.55;
   color: var(--color-body);
   text-wrap: pretty;
 }
 
-.essay__byline {
-  margin-top: var(--space-6);
+.essay__body > p + p {
+  margin-top: 1em;
 }
 
-.essay__figure {
-  max-width: 62rem;
-  margin: clamp(40px, 6vw, 72px) auto 0;
-}
-
-.essay__image {
-  overflow: hidden;
-  border-radius: 16px;
-  background: var(--color-paper-deep);
-}
-
-.essay__image img {
-  width: 100%;
-  max-height: 78vh;
-  object-fit: cover;
-}
-
-.essay__figure .caption {
-  font-size: 1rem;
-  font-style: italic;
-  text-align: center;
-}
-
-.essay__body {
-  margin: clamp(48px, 6vw, 80px) auto 0;
-}
-
-.essay__body > p:first-child::first-letter {
-  float: left;
-  margin: 0.08em 0.1em 0 0;
-  font-size: 3.6em;
-  line-height: 0.82;
-  color: var(--color-ink);
+.essay__date {
+  margin-top: var(--space-8);
 }
 
 .essay__foot {
-  max-width: var(--reading-max);
-  margin: clamp(64px, 8vw, 112px) auto 0;
+  margin-top: clamp(48px, 6vw, 80px);
   padding-top: var(--space-8);
   border-top: 1px solid var(--color-rule);
   display: flex;

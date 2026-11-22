@@ -30,54 +30,65 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
+// Layout follows Aeon's article page: a full-width image band, a small
+// right-aligned caption, then a slim meta column beside the text column.
 export default async function EssayPage({ params }: Params) {
   const essay = getEssayBySlug((await params).slug);
   if (!essay?.body) notFound();
 
-  const byline = [
-    "Joel Ibabao",
-    essay.publishedAt && formatDate(essay.publishedAt),
-    `${readingMinutes(essay.body)} min read`,
-  ].filter(Boolean);
-
   return (
     <>
       <ReadingProgress />
-      <article className="container page-head essay">
-        <header className="essay__head">
-          <p className="eyebrow">{essay.kind}</p>
-          <h1 className="display essay__title">{essay.title}</h1>
-          <p className="essay__standfirst">{essay.excerpt}</p>
-          <p className="meta essay__byline">{byline.join(" · ")}</p>
-        </header>
-
-        <figure className="essay__figure">
-          <div className="essay__image">
+      <article className="essay">
+        <figure className="essay__hero">
+          <div className="essay__band">
             <Image
               src={essay.image.src}
               alt={essay.image.alt}
               width={essay.image.width}
               height={essay.image.height}
-              sizes="(min-width: 1100px) 1000px, 92vw"
+              sizes="100vw"
               preload
             />
           </div>
-          {essay.image.caption && <figcaption className="caption">{essay.image.caption}</figcaption>}
+          {essay.image.caption && (
+            <figcaption className="container essay__caption">
+              <RichText text={essay.image.caption} />
+            </figcaption>
+          )}
         </figure>
 
-        <div className="reading-copy essay__body">
-          {essay.body.map((p, i) => (
-            <p key={i}>
-              <RichText text={p} />
-            </p>
-          ))}
-        </div>
+        <div className="container essay__grid">
+          <aside className="essay__aside meta">
+            <p className="eyebrow">{essay.kind}</p>
+            <p>By Joel Ibabao</p>
+            <p>{readingMinutes(essay.body)} min read</p>
+            <ArrowLink href="/writing" direction="left" className="essay__back">
+              All writing
+            </ArrowLink>
+          </aside>
 
-        <div className="essay__foot">
-          <ArrowLink href="/writing" direction="left">
-            Back to writing
-          </ArrowLink>
-          <ArrowLink href="/about">About Joel</ArrowLink>
+          <div className="essay__main">
+            <h1 className="essay__title">{essay.title}</h1>
+            <div className="essay__body">
+              {essay.body.map((p, i) => (
+                <p key={i}>
+                  <RichText text={p} />
+                </p>
+              ))}
+            </div>
+            {essay.publishedAt && (
+              <p className="meta essay__date">
+                <time dateTime={essay.publishedAt}>{formatDate(essay.publishedAt)}</time>
+              </p>
+            )}
+            <div className="essay__foot">
+              <ArrowLink href="/writing" direction="left">
+                Back to writing
+              </ArrowLink>
+              <ArrowLink href="/about">About Joel</ArrowLink>
+            </div>
+          </div>
         </div>
       </article>
     </>
