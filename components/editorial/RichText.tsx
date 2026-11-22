@@ -17,7 +17,7 @@ export function RichText({ text }: { text: string }) {
           {label}
         </Link>
       ) : (
-        <a key={i} href={href}>
+        <a key={i} href={href} target="_blank" rel="noopener noreferrer">
           {label}
         </a>
       );
