@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { RichText } from "@/components/editorial/RichText";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -13,9 +14,11 @@ export default function AboutPage() {
       <h1 id="about-title" className="display page-title">
         About
       </h1>
-      <div className="page-body reading-copy about">
+      <div className="reading-copy about">
         {site.about.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
+          <p key={paragraph}>
+            <RichText text={paragraph} />
+          </p>
         ))}
         <p className="meta about__contact">
           Contact: <a href={`mailto:${site.email}`}>{site.email}</a>
