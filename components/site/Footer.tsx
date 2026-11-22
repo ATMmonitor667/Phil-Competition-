@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type NavItem = { href: string; label: string };
+import type { NavItem } from "@/lib/content";
 
 export function Footer({ nav, email }: { nav: NavItem[]; email: string }) {
   if (usePathname() === "/") return null;
@@ -34,7 +34,7 @@ export function Footer({ nav, email }: { nav: NavItem[]; email: string }) {
         </div>
         <div className="site-footer__bottom meta">
           <p>© {year} Joel Ibabao</p>
-          <p>Set in Newsreader and Inter.</p>
+          <p>Set in Crimson Pro.</p>
         </div>
       </div>
     </footer>

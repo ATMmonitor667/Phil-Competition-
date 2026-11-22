@@ -1,22 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Newsreader } from "next/font/google";
+import { Crimson_Pro } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { site } from "@/content/site";
 import { navItems } from "@/lib/content";
 
-const newsreader = Newsreader({
+const crimson = Crimson_Pro({
   subsets: ["latin"],
   style: ["normal", "italic"],
-  axes: ["opsz"],
-  variable: "--font-newsreader",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600"],
+  variable: "--font-crimson",
   display: "swap",
 });
 
@@ -36,13 +30,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F7F5EF",
+  themeColor: "#f3ede2",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const nav = navItems();
   return (
-    <html lang="en" className={`${newsreader.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" className={crimson.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
       </head>

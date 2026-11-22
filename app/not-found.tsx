@@ -12,7 +12,7 @@ export default function NotFound() {
         <ArrowLink href="/" direction="left">
           Home
         </ArrowLink>
-        <ArrowLink href="/work">Work</ArrowLink>
+        <ArrowLink href="/writing">Writing</ArrowLink>
       </div>
     </section>
   );

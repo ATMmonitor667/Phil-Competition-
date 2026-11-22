@@ -1,76 +1,53 @@
-import { work } from "@/content/work";
 import { writing } from "@/content/writing";
 
-export type Media = {
+export type PieceImage = {
   src: string;
   width: number;
   height: number;
   alt: string;
-  credit?: string;
+  caption?: string;
+  /** CSS object-position for cropped views, e.g. "50% 30%". */
+  position?: string;
 };
 
-export type WorkEntry = {
+/** A piece of writing: either an essay hosted here (`body`) or an external article (`publication`). */
+export type Piece = {
   slug: string;
   title: string;
-  titleLines?: string[];
-  type: "publication" | "initiative" | "education";
-  category: string;
-  role?: string;
-  organization?: string;
-  period?: string;
-  summary: string;
-  framing: string;
-  linkLabel: string;
-  cover?: Media;
-  externalUrl?: { label: string; href: string };
-  context: string[];
-  contribution: string[];
-  activities?: { date?: string; text: string }[];
-  reflection?: string[];
-  sortOrder: number;
-  draft?: boolean;
-};
-
-export type Block =
-  | { type: "p"; text: string }
-  | { type: "h2"; text: string }
-  | { type: "quote"; text: string; cite?: string };
-
-export type Essay = {
-  slug: string;
-  title: string;
-  deck?: string;
   kind: string;
-  publication?: { name: string; url: string };
-  publishedAt?: string;
   excerpt: string;
-  body?: Block[];
-  pdf?: string;
+  image: PieceImage;
+  publishedAt?: string;
+  publication?: { name: string; url: string };
+  body?: string[];
   draft?: boolean;
 };
 
-export function getWork(): WorkEntry[] {
-  return work.filter((w) => !w.draft).sort((a, b) => a.sortOrder - b.sortOrder);
+/**
+ * Newest first. Essays without a publication date are the most recent work,
+ * so they lead in their listed order, followed by dated pieces in reverse
+ * chronological order.
+ */
+export function getWriting(): Piece[] {
+  const live = writing.filter((p) => !p.draft);
+  const undated = live.filter((p) => !p.publishedAt);
+  const dated = live
+    .filter((p) => p.publishedAt)
+    .sort((a, b) => b.publishedAt!.localeCompare(a.publishedAt!));
+  return [...undated, ...dated];
 }
 
-export function getWorkBySlug(slug: string) {
-  return getWork().find((w) => w.slug === slug);
-}
-
-export function getNextWork(slug: string) {
-  const all = getWork();
-  const i = all.findIndex((w) => w.slug === slug);
-  return all.length > 1 ? all[(i + 1) % all.length] : undefined;
-}
-
-export function getWriting(): Essay[] {
-  return writing
-    .filter((e) => !e.draft)
-    .sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""));
+/** Essays that have their own page on this site. */
+export function getEssays(): Piece[] {
+  return getWriting().filter((p) => p.body);
 }
 
 export function getEssayBySlug(slug: string) {
-  return getWriting().find((e) => e.slug === slug);
+  return getEssays().find((e) => e.slug === slug);
+}
+
+export function pieceHref(p: Piece) {
+  return p.body ? `/writing/${p.slug}` : p.publication!.url;
 }
 
 export function formatDate(iso: string) {
@@ -82,16 +59,19 @@ export function formatDate(iso: string) {
   });
 }
 
-export function readingMinutes(blocks: Block[]) {
-  const words = blocks.reduce((n, b) => n + b.text.split(/\s+/).filter(Boolean).length, 0);
+export function readingMinutes(paragraphs: string[]) {
+  const words = paragraphs.reduce((n, t) => n + t.split(/\s+/).filter(Boolean).length, 0);
   return Math.max(1, Math.round(words / 230));
 }
 
-export function navItems() {
+export type NavItem = { href: string; label: string };
+
+export function navItems(): NavItem[] {
   return [
-    { href: "/work", label: "Work" },
-    ...(getWriting().length ? [{ href: "/writing", label: "Writing" }] : []),
     { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
+    { href: "/writing", label: "Writing" },
+    { href: "/college-essay-editing", label: "College Essay Editing" },
+    { href: "/ethics-bowl-tutoring", label: "Ethics Bowl Tutoring" },
+    { href: "/math-tutoring", label: "Math Tutoring" },
   ];
 }

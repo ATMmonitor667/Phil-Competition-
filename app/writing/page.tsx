@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { formatDate, getWriting } from "@/lib/content";
+import { formatDate, getWriting, pieceHref, readingMinutes, type Piece } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Writing",
@@ -9,9 +9,50 @@ export const metadata: Metadata = {
   alternates: { canonical: "/writing" },
 };
 
+function Card({ piece, index }: { piece: Piece; index: number }) {
+  const href = pieceHref(piece);
+  const external = !piece.body;
+  const label = [piece.kind, piece.publication?.name].filter(Boolean).join(" · ");
+
+  const inner = (
+    <>
+      <div className="card__media">
+        <Image
+          src={piece.image.src}
+          alt={piece.image.alt}
+          fill
+          sizes="(min-width: 1100px) 30vw, (min-width: 640px) 46vw, 92vw"
+          preload={index < 3}
+          style={piece.image.position ? { objectPosition: piece.image.position } : undefined}
+        />
+      </div>
+      <p className="card__label">{label}</p>
+      <h2 className="card__title">{piece.title}</h2>
+      <p className="card__excerpt">{piece.excerpt}</p>
+      <p className="card__date">
+        {piece.publishedAt ? <time dateTime={piece.publishedAt}>{formatDate(piece.publishedAt)}</time> : `${readingMinutes(piece.body ?? [])} min read`}
+        {external && <span className="visually-hidden"> (opens The Daily Princetonian in a new tab)</span>}
+      </p>
+    </>
+  );
+
+  return (
+    <li className="card">
+      {external ? (
+        <a href={href} className="card__link" target="_blank" rel="noopener noreferrer">
+          {inner}
+        </a>
+      ) : (
+        <Link href={href} className="card__link">
+          {inner}
+        </Link>
+      )}
+    </li>
+  );
+}
+
 export default function WritingPage() {
   const writing = getWriting();
-  if (writing.length === 0) notFound();
 
   return (
     <>
@@ -20,19 +61,9 @@ export default function WritingPage() {
         <p className="lead">Essays and articles on ethics, philosophy and public life.</p>
       </header>
       <div className="container page-body">
-        <ul className="writing-list">
-          {writing.map((e) => (
-            <li key={e.slug}>
-              <p className="meta">
-                {[e.kind, e.publication?.name, e.publishedAt && formatDate(e.publishedAt)].filter(Boolean).join(" · ")}
-              </p>
-              <h2 className="display entry__title">
-                <Link href={`/writing/${e.slug}`} className="entry__title-link">
-                  {e.title}
-                </Link>
-              </h2>
-              <p className="support">{e.excerpt}</p>
-            </li>
+        <ul className="card-grid">
+          {writing.map((p, i) => (
+            <Card key={p.slug} piece={p} index={i} />
           ))}
         </ul>
       </div>
