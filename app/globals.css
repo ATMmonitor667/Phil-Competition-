@@ -1115,13 +1115,9 @@ html.js .reveal--mask.is-visible {
 
 @media (min-width: 900px) {
   .service__grid {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
-    column-gap: 8%;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    column-gap: 7%;
     align-items: start;
-  }
-  .service__inquiry {
-    position: sticky;
-    top: calc(var(--header-h-condensed) + 32px);
   }
 }
 
@@ -1162,6 +1158,156 @@ html.js .reveal--mask.is-visible {
   background: var(--color-body);
 }
 
+.button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
 .button:hover .arrow {
   transform: translateX(3px);
+}
+
+/* ==========================================================================
+   Inquiry form (service pages)
+   ========================================================================== */
+.inquiry {
+  display: grid;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+
+.inquiry__field {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.inquiry__field label {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.inquiry__optional,
+.inquiry__hint {
+  font-weight: 400;
+  color: var(--color-muted);
+}
+
+.inquiry__hint {
+  margin-top: -2px;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.inquiry input[type="text"],
+.inquiry input[type="email"],
+.inquiry textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--color-rule);
+  border-radius: 10px;
+  background: var(--color-paper-raised);
+  font-family: var(--font-ui);
+  font-size: 1.125rem;
+  line-height: 1.45;
+  color: var(--color-body);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+.inquiry textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.inquiry input:hover,
+.inquiry textarea:hover {
+  border-color: var(--color-muted);
+}
+
+.inquiry input:focus-visible,
+.inquiry textarea:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 1px;
+  border-color: var(--color-ink);
+}
+
+.inquiry input[type="file"] {
+  max-width: 100%;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  color: var(--color-muted);
+}
+
+.inquiry input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 8px 16px;
+  border: 1px solid var(--color-ink);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.inquiry input[type="file"]::file-selector-button:hover {
+  background: var(--color-paper-deep);
+}
+
+.inquiry__files {
+  margin: var(--space-1) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1rem;
+  color: var(--color-body);
+  overflow-wrap: anywhere;
+}
+
+.inquiry__files span {
+  color: var(--color-muted);
+}
+
+.inquiry__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.inquiry__error {
+  font-size: 1.0625rem;
+  color: #8a2c1d;
+}
+
+.inquiry .button {
+  margin-top: 0;
+  justify-self: start;
+}
+
+.inquiry--sent {
+  padding: var(--space-6);
+  border: 1px solid var(--color-rule);
+  border-radius: 12px;
+  background: var(--color-paper-raised);
+  gap: var(--space-2);
+}
+
+.inquiry__thanks {
+  font-size: 1.375rem;
+  color: var(--color-ink);
+}
+
+.inquiry__again {
+  justify-self: start;
+  margin-top: var(--space-2);
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 1.0625rem;
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
 }

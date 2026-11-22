@@ -38,9 +38,8 @@ export type Service = {
   /** Paragraphs. `[About page](/about)`-style links are supported. */
   body: string[];
   invitation: string;
-  cta: string;
-  emailSubject: string;
-  emailBody: string;
+  /** Shown under "Upload PDFs" in the inquiry form. */
+  uploadHint: string;
 };
 
 export const services: Service[] = [
@@ -55,9 +54,7 @@ export const services: Service[] = [
     ],
     invitation:
       "Tell me what you’re working on and when it’s due. I’ll reply with my availability, rates, and how we might work together.",
-    cta: "Ask about essay editing",
-    emailSubject: "College essay editing inquiry",
-    emailBody: "Hi Joel,\n\nWhat I’m working on:\n\nWhen it’s due:\n\n",
+    uploadHint: "For example, an essay prompt or draft.",
   },
   {
     slug: "ethics-bowl-tutoring",
@@ -70,9 +67,7 @@ export const services: Service[] = [
     ],
     invitation:
       "Tell me what you’re preparing for and what you’d like to work on. I’ll reply with my availability, rates, and what a session could cover.",
-    cta: "Ask about tutoring",
-    emailSubject: "Ethics Bowl tutoring inquiry",
-    emailBody: "Hi Joel,\n\nWhat I’m preparing for:\n\nWhat I’d like to work on:\n\n",
+    uploadHint: "For example, a case packet or practice response.",
   },
   {
     slug: "math-tutoring",
@@ -86,9 +81,7 @@ export const services: Service[] = [
     ],
     invitation:
       "Tell me what you’re preparing for and what you’d like to work on. I’ll reply with my availability, rates, and what a session could cover.",
-    cta: "Ask about tutoring",
-    emailSubject: "Math tutoring inquiry",
-    emailBody: "Hi Joel,\n\nCourse or test:\n\nWhat I’d like to work on:\n\n",
+    uploadHint: "For example, a syllabus, worksheet, or practice test.",
   },
 ];
 
@@ -96,9 +89,4 @@ export function getService(slug: string) {
   const s = services.find((x) => x.slug === slug);
   if (!s) throw new Error(`Unknown service: ${slug}`);
   return s;
-}
-
-export function mailto(subject: string, body = "") {
-  const q = new URLSearchParams({ subject, body }).toString().replace(/\+/g, "%20");
-  return `mailto:${site.email}?${q}`;
 }
