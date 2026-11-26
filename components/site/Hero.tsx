@@ -33,9 +33,6 @@ export function Hero({ eyebrow, lines, intro, cta }: Props) {
         <ArrowLink href="/writing" direction="down-right">{cta}</ArrowLink>
         <ArrowLink href="/about">Explore bio</ArrowLink>
       </div>
-      <p className="eyebrow hero__cue" aria-hidden="true">
-        Scroll to explore
-      </p>
     </section>
   );
 }

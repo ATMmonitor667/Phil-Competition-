@@ -603,7 +603,7 @@ html.js .reveal--mask.is-visible {
   justify-content: center;
   min-height: calc(90vh - var(--header-h));
   min-height: calc(90svh - var(--header-h));
-  padding-block: clamp(48px, 8vh, 112px) clamp(88px, 12vh, 136px);
+  padding-block: clamp(48px, 8vh, 112px);
 }
 
 .hero__eyebrow {
@@ -647,22 +647,6 @@ html.js .reveal--mask.is-visible {
   margin-top: var(--space-6);
 }
 
-.hero__cue {
-  position: absolute;
-  left: 0;
-  bottom: clamp(24px, 4vh, 40px);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.hero__cue::before {
-  content: "";
-  width: 1px;
-  height: 28px;
-  background: var(--color-rule);
-}
-
 .hero--animate .hero__eyebrow {
   animation: fade-in 450ms var(--ease-out) 100ms both;
 }
@@ -680,15 +664,7 @@ html.js .reveal--mask.is-visible {
   animation: lift 450ms var(--ease-out) 650ms both;
 }
 
-.hero--animate .hero__cue {
-  animation: fade-in 600ms var(--ease-out) 850ms both;
-}
 
-@media (max-height: 560px) {
-  .hero__cue {
-    display: none;
-  }
-}
 
 .caption {
   margin-top: var(--space-3);
@@ -1310,4 +1286,49 @@ html.js .reveal--mask.is-visible {
   text-decoration: underline;
   text-underline-offset: 4px;
   cursor: pointer;
+}
+
+/* Form hidden behind a button until opened */
+.inquiry__toggle {
+  margin-top: var(--space-6);
+  cursor: pointer;
+  border: 0;
+}
+
+.inquiry__toggle:hover .arrow {
+  transform: translate(2px, 2px);
+}
+
+.inquiry__reveal {
+  overflow: hidden;
+}
+
+.inquiry__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.inquiry__heading {
+  font-size: 1.375rem;
+  color: var(--color-ink);
+}
+
+.inquiry__close {
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-ui);
+  font-size: 1.0625rem;
+  color: var(--color-muted);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.inquiry__close:hover {
+  color: var(--color-ink);
 }

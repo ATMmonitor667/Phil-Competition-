@@ -38,6 +38,8 @@ export type Service = {
   /** Paragraphs. `[About page](/about)`-style links are supported. */
   body: string[];
   invitation: string;
+  /** Label of the button that opens the inquiry form. */
+  cta: string;
   /** Shown under "Upload PDFs" in the inquiry form. */
   uploadHint: string;
 };
@@ -54,6 +56,7 @@ export const services: Service[] = [
     ],
     invitation:
       "Tell me what you’re working on and when it’s due. I’ll reply with my availability, rates, and how we might work together.",
+    cta: "Ask about essay editing",
     uploadHint: "For example, an essay prompt or draft.",
   },
   {
@@ -67,6 +70,7 @@ export const services: Service[] = [
     ],
     invitation:
       "Tell me what you’re preparing for and what you’d like to work on. I’ll reply with my availability, rates, and what a session could cover.",
+    cta: "Ask about tutoring",
     uploadHint: "For example, a case packet or practice response.",
   },
   {
@@ -81,6 +85,7 @@ export const services: Service[] = [
     ],
     invitation:
       "Tell me what you’re preparing for and what you’d like to work on. I’ll reply with my availability, rates, and what a session could cover.",
+    cta: "Ask about tutoring",
     uploadHint: "For example, a syllabus, worksheet, or practice test.",
   },
 ];

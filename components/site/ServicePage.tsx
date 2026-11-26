@@ -34,7 +34,13 @@ export function ServicePage({ slug }: { slug: string }) {
 
         <Reveal delay={100} className="service__inquiry">
           <p className="service__invitation">{s.invitation}</p>
-          <InquiryForm service={s.slug} serviceTitle={s.title} uploadHint={s.uploadHint} email={site.email} />
+          <InquiryForm
+            service={s.slug}
+            serviceTitle={s.title}
+            cta={s.cta}
+            uploadHint={s.uploadHint}
+            email={site.email}
+          />
           <p className="meta service__fallback">
             Or email <a href={`mailto:${site.email}`}>{site.email}</a>
           </p>
