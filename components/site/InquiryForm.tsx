@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { Arrow } from "@/components/ui/ArrowLink";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_INQUIRY_ENDPOINT ?? "";
@@ -10,6 +11,8 @@ const MAX_TOTAL_BYTES = 10 * 1024 * 1024;
 type Props = {
   service: string;
   serviceTitle: string;
+  /** Label of the button that reveals the form. */
+  cta: string;
   uploadHint: string;
   email: string;
 };
@@ -33,11 +36,22 @@ function formatSize(bytes: number) {
   return bytes < 1024 * 1024 ? `${Math.max(1, Math.round(bytes / 1024))} KB` : `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
-export function InquiryForm({ service, serviceTitle, uploadHint, email }: Props) {
+export function InquiryForm({ service, serviceTitle, cta, uploadHint, email }: Props) {
   const id = useId();
+  const reduce = useReducedMotion();
   const formRef = useRef<HTMLFormElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState(false);
+  const [focusOnOpen, setFocusOnOpen] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [status, setStatus] = useState<Status>({ kind: "idle" });
+
+  useEffect(() => {
+    if (open && focusOnOpen) {
+      document.getElementById(`${id}-name`)?.focus({ preventScroll: true });
+      setFocusOnOpen(false);
+    }
+  }, [open, focusOnOpen, id]);
 
   function onFiles(list: FileList | null) {
     const picked = Array.from(list ?? []);
@@ -118,8 +132,49 @@ export function InquiryForm({ service, serviceTitle, uploadHint, email }: Props)
 
   const sending = status.kind === "sending";
 
+  // The form stays hidden behind one button until the visitor asks for it.
+  if (!open) {
+    return (
+      <button
+        ref={toggleRef}
+        type="button"
+        className="button inquiry__toggle"
+        aria-expanded="false"
+        aria-controls={`${id}-form`}
+        onClick={() => {
+          setOpen(true);
+          setFocusOnOpen(true);
+        }}
+      >
+        {cta}
+        <Arrow direction="down-right" />
+      </button>
+    );
+  }
+
   return (
-    <form ref={formRef} className="inquiry" onSubmit={onSubmit} aria-busy={sending}>
+    <motion.div
+      className="inquiry__reveal"
+      initial={reduce ? false : { opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto", transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } }}
+    >
+    <form ref={formRef} id={`${id}-form`} className="inquiry" onSubmit={onSubmit} aria-busy={sending}>
+      <div className="inquiry__head">
+        <p className="inquiry__heading">{cta}</p>
+        <button
+          type="button"
+          className="inquiry__close"
+          aria-expanded="true"
+          aria-controls={`${id}-form`}
+          onClick={() => {
+            setOpen(false);
+            requestAnimationFrame(() => toggleRef.current?.focus());
+          }}
+        >
+          Close
+        </button>
+      </div>
+
       <div className="inquiry__field">
         <label htmlFor={`${id}-name`}>Name</label>
         <input id={`${id}-name`} name="name" type="text" autoComplete="name" required maxLength={200} />
@@ -181,5 +236,6 @@ export function InquiryForm({ service, serviceTitle, uploadHint, email }: Props)
         {!sending && <Arrow />}
       </button>
     </form>
+    </motion.div>
   );
 }
